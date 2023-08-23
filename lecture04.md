@@ -12,8 +12,17 @@
 - RDS設定画面
 ![RDSセッティング](image/04_RDS_settings.PNG)
 
+- RDS設定画面(VPC状況)
+![RDSセッティング２](image/04_RDS_settings_2.PNG)
+
 - VPC設定画面
 ![VPCセッティング](image/04_VPC_settings.PNG)
+
+- セキュリティグループ画面（インバウンド）
+![インバウンド](image/04_SG_inbaund.PNG)
+
+- セキュリティグループ画面（アウトバウンド）
+![アウトバウンド](image/04_SG_outbaund.PNG)
 
 - 今回の課題から学んだこと
 - VPCを構築し、その上のパブリックサブネットにEC2、プライベートサブネットにRDSを設置し、
