@@ -3,9 +3,16 @@
 - VPCの構築、RDS、EC2の配置を実施。
 - EC2に接続しMYSQLをインストール・ログインが可能であることを確認した。
 
+- EC2にインストールしたmysqlにログインした結果
 ![MYSQLlog in画面](image/04_mysql_login.PNG)
+
+- EC2設定画面
 ![EC2セッティング](image/04_EC2_settings.PNG)
+
+- RDS設定画面
 ![RDSセッティング](image/04_RDS_settings.PNG)
+
+- VPC設定画面
 ![VPCセッティング](image/04_VPC_settings.PNG)
 
 - 今回の課題から学んだこと
