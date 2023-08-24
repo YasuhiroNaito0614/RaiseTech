@@ -25,10 +25,10 @@
 ![EC2アウトバウンド](image/04_SG_forEC2_outbaund.PNG)
 
 - RDS用セキュリティグループ画面（インバウンド）
-![EC2インバウンド](image/04_SG_forEC2_inbaund.PNG)
+![EC2インバウンド](image/04_SG_forRDS_inbaund.PNG)
 
 - RDS用セキュリティグループ画面（アウトバウンド）
-![EC2アウトバウンド](image/04_SG_forEC2_outbaund.PNG)
+![EC2アウトバウンド](image/04_SG_forRDS_outbaund.PNG)
 
 - 今回の課題から学んだこと
 - VPCを構築し、その上のパブリックサブネットにEC2、プライベートサブネットにRDSを設置し、
