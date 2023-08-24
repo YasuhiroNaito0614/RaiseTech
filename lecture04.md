@@ -4,25 +4,31 @@
 - EC2に接続しMYSQLをインストール・ログインが可能であることを確認した。
 
 - EC2にインストールしたmysqlにログインした結果
-![MYSQLlog in画面](image/04_mysql_login.PNG)
+![MYSQLlog in画面](image/04_mysql_login_2.PNG)
 
 - EC2設定画面
-![EC2セッティング](image/04_EC2_settings.PNG)
+![EC2セッティング](image/04_EC2_settings_2.PNG)
 
 - RDS設定画面
 ![RDSセッティング](image/04_RDS_settings.PNG)
 
 - RDS設定画面(VPC状況)
-![RDSセッティング２](image/04_RDS_settings_2.PNG)
+![RDSセッティング２](image/04_RDS_settings_2_2.PNG)
 
 - VPC設定画面
 ![VPCセッティング](image/04_VPC_settings.PNG)
 
-- セキュリティグループ画面（インバウンド）
-![インバウンド](image/04_SG_inbaund.PNG)
+- EC2用セキュリティグループ画面（インバウンド）
+![EC2インバウンド](image/04_SG_forEC2_inbaund.PNG)
 
-- セキュリティグループ画面（アウトバウンド）
-![アウトバウンド](image/04_SG_outbaund.PNG)
+- EC2用セキュリティグループ画面（アウトバウンド）
+![EC2アウトバウンド](image/04_SG_forEC2_outbaund.PNG)
+
+- RDS用セキュリティグループ画面（インバウンド）
+![EC2インバウンド](image/04_SG_forEC2_inbaund.PNG)
+
+- RDS用セキュリティグループ画面（アウトバウンド）
+![EC2アウトバウンド](image/04_SG_forEC2_outbaund.PNG)
 
 - 今回の課題から学んだこと
 - VPCを構築し、その上のパブリックサブネットにEC2、プライベートサブネットにRDSを設置し、
