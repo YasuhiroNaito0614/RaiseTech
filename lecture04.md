@@ -22,7 +22,7 @@
 ![EC2インバウンド](image/04_SG_forEC2_inbaund_2.PNG)
 
 - EC2用セキュリティグループ画面（アウトバウンド）
-![EC2アウトバウンド](image/04_SG_forEC2_outbaund_2.PNG)
+![EC2アウトバウンド](image/04_SG_forEC2_outbaund_3.PNG)
 
 - RDS用セキュリティグループ画面（インバウンド）
 ![EC2インバウンド](image/04_SG_forRDS_inbaund_2.PNG)
