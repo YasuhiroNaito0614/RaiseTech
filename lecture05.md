@@ -43,7 +43,7 @@
 ![WEB画面４](image/05_web4.PNG)
 
 - AWS構成図
-![AWS構成図](image/05_drawio.png)
+![AWS構成図](image/05_drawio_2.png)
 
 - 今回の課題から学んだこと
 - 小さいステップを踏み積み上げていくことの大切さと難しさ。
