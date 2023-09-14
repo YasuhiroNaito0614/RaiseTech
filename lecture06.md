@@ -27,7 +27,7 @@
 ![アラート通知](image/06_alarts_mail.PNG)
 
 
-- ③AWS利用料見積作成
+- ③AWS利用料見積作成＆現在の利用料確認
 
 - 見積画像
 ![見積１](image/06_AWS_calculator_1.PNG)
@@ -37,6 +37,11 @@
 - 共有パス
 [AWS calculator path](https://calculator.aws/#/estimate?id=897620030675032cd874dda65e2610fccb30a865)
 
+- 現状の使用料金
+![使用料](image/06_billings_now.PNG)
+
+- 先月のEC2使用料金
+![EC2使用料](image/06_billings_EC2.PNG)
 
 - 今回の課題から学んだこと
 - AWS意外とお金かかる。特にRDS。
