@@ -56,7 +56,7 @@
 ![S3](image/10_s3_info.PNG)
 
 - 実コードは以下参照
-![lecture10.yml] (template/lecture10.yml)
+[lecture10.yml] (template/lecture10.yml)
 
 - 今回の課題から学んだこと
 - RDSの構築に結構時間かかる。
