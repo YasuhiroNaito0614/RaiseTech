@@ -29,7 +29,10 @@
 - EC2のインバウンド・アウトバウンド
 ![EC2セキュリティグループ](image/10_ec2_sg.PNG)
 
-- 構築されたRDS（インバウンド・アウトバウンド含む）
+- 構築されたRDS
+![RDS](image/10_rds_info.PNG)
+
+- RDSのインバウンド・アウトバウンド
 ![RDSインバウンド](image/10_rds_sg_inbound.PNG)
 ![RDSアウトバウンド](image/10_rds_sg_outbound.PNG)
 
