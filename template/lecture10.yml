@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: 
-  VPC and Subnet Create
+  VPC,EC2,RDS,ALB,S3 making
 
 Metadata: 
   "AWS::CloudFormation::Interface": 
@@ -148,7 +148,7 @@ Parameters:
     AllowedValues: [ "true", "false" ]
         
   BucketNameBucket01:
-    Default: "lecture10-s3-accesslog-naitoyasuhiro"
+    Default: "lecture10-s3-test-naitoyasuhiro"
     Type: String
     Description: Name for Bucket_1
 
@@ -353,7 +353,7 @@ Resources:
   EC2SG:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupName: !Sub "${PJLecture10}-SG-test"
+      GroupName: !Sub "${PJLecture10}-SG-EC2"
       GroupDescription: Allow SSH and HTTP access
       VpcId: !Ref VPC
       SecurityGroupIngress:
