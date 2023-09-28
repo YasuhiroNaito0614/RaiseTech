@@ -1,0 +1,547 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: 
+  VPC and Subnet Create
+
+Metadata: 
+  "AWS::CloudFormation::Interface": 
+    ParameterGroups: 
+      - Label: 
+          default: "Project Name Lecture10"
+        Parameters: 
+          - PJLecture10
+      - Label: 
+          default: "Network Configuration"
+        Parameters: 
+          - VPCCIDR
+          - PublicSubnetACIDR
+          - PublicSubnetCCIDR
+          - PrivateSubnetACIDR
+          - PrivateSubnetCCIDR
+          
+          - DBInstanceName
+          - MySQLMajorVersion
+          - MySQLMinorVersion
+          - DBInstanceClass
+          - DBInstanceStorageSize
+          - DBInstanceStorageType
+          - DBName
+          - DBMasterUserName
+          - DBPassword
+          - MultiAZ
+          
+          - BucketNameBucket01
+          
+    ParameterLabels: 
+      VPCCIDR: 
+        default: "10.1.0.0/16"
+      PublicSubnetACIDR: 
+        default: "10.1.10.0/24"
+      PublicSubnetCCIDR: 
+        default: "10.1.20.0/24"
+      PrivateSubnetACIDR: 
+        default: "10.1.100.0/24"
+      PrivateSubnetCCIDR: 
+        default: "10.1.200.0/24"
+        
+      DBInstanceName:
+        default: "DBInstanceName"
+      MySQLMajorVersion:
+        default: "MySQLMajorVersion"
+      MySQLMinorVersion:
+        default: "MySQLMinorVersion"
+      DBInstanceClass:
+        default: "DBInstanceClass"
+      DBInstanceStorageSize:
+        default: "DBInstanceStorageSize"
+      DBInstanceStorageType:
+        default: "DBInstanceStorageType"
+      DBName:
+        default: "DBName"
+      DBMasterUserName:
+        default: "DBUserName"
+      DBPassword:
+        default: "DBPassword"
+      MultiAZ:
+        default: "MultiAZ"
+        
+      BucketNameBucket01:
+        default: "BucketNameBucket01"
+
+# ------------------------------------------------------------#
+# Input Parameters
+# ------------------------------------------------------------# 
+Parameters:
+  PJLecture10:
+    Type: String
+    Default: "PJLecture10-test"
+
+  VPCCIDR:
+    Type: String
+    Default: "10.1.0.0/16"
+
+  PublicSubnetACIDR:
+    Type: String
+    Default: "10.1.10.0/24"
+
+  PublicSubnetCCIDR:
+    Type: String
+    Default: "10.1.20.0/24"
+
+  PrivateSubnetACIDR:
+    Type: String
+    Default: "10.1.100.0/24"
+
+  PrivateSubnetCCIDR:
+    Type: String
+    Default: "10.1.200.0/24"
+    
+  DBInstanceName:
+    Type: String
+    Default: "rds"
+    
+  MySQLMajorVersion:
+    Type: String
+    Default: "8.0"
+    AllowedValues: [ "5.5", "5.6", "5.7", "8.0"]
+    
+  MySQLMinorVersion:
+    Type: String
+    Default: "33"
+    
+  DBInstanceClass:
+    Type: String
+    Default: "db.t2.micro" 
+    
+  DBInstanceStorageSize:
+    Type: String
+    Default: "30"
+    
+  DBInstanceStorageType:
+    Type: String
+    Default: "gp2"
+    
+  DBName:
+    Type: String
+    Default: "db"
+    
+  DBMasterUserName:
+    Type: String
+    Default: "root"
+    NoEcho: true
+    MinLength: 1
+    MaxLength: 16
+    AllowedPattern: "[a-zA-Z][a-zA-Z0-9]*"
+    ConstraintDescription: "must begin with a letter and contain only alphanumeric characters."
+    
+  DBPassword: 
+    Default: "dbpassword"
+    NoEcho: true
+    Type: String
+    MinLength: 8
+    MaxLength: 41
+    AllowedPattern: "[a-zA-Z0-9]*"
+    ConstraintDescription: "must contain only alphanumeric characters."
+    
+  MultiAZ: 
+    Default: "false"
+    Type: String
+    AllowedValues: [ "true", "false" ]
+        
+  BucketNameBucket01:
+    Default: "lecture10-s3-accesslog-naitoyasuhiro"
+    Type: String
+    Description: Name for Bucket_1
+
+Resources: 
+# ------------------------------------------------------------#
+#  VPC
+# ------------------------------------------------------------#
+# VPC Create
+  VPC: 
+    Type: "AWS::EC2::VPC"
+    Properties: 
+      CidrBlock: !Ref VPCCIDR
+      EnableDnsSupport: "true"
+      EnableDnsHostnames: "true"
+      InstanceTenancy: default
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-vpc"
+
+# InternetGateway Create
+  InternetGateway: 
+    Type: "AWS::EC2::InternetGateway"
+    Properties: 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-igw"
+
+# IGW Attach
+  InternetGatewayAttachment: 
+    Type: "AWS::EC2::VPCGatewayAttachment"
+    Properties: 
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref VPC 
+
+# ------------------------------------------------------------#
+#  Subnet
+# ------------------------------------------------------------#          
+# Public SubnetA Create
+  PublicSubnetA: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      AvailabilityZone: "ap-northeast-1a"
+      CidrBlock: !Ref PublicSubnetACIDR
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-public-subnet-a"
+
+# Public SubnetC Create
+  PublicSubnetC: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      AvailabilityZone: "ap-northeast-1c"
+      CidrBlock: !Ref PublicSubnetCCIDR
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-public-subnet-c"
+
+# Private SubnetA Create
+  PrivateSubnetA: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      AvailabilityZone: "ap-northeast-1a"
+      CidrBlock: !Ref PrivateSubnetACIDR
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-private-subnet-a"
+
+# Private SubnetC Create
+  PrivateSubnetC: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      AvailabilityZone: "ap-northeast-1c"
+      CidrBlock: !Ref PrivateSubnetCCIDR
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-private-subnet-c"
+
+# ------------------------------------------------------------#
+#  RouteTable
+# ------------------------------------------------------------#          
+# Public RouteTableA Create
+  PublicRouteTableA: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-public-route-a"
+
+# Public RouteTableC Create
+  PublicRouteTableC: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-public-route-c"
+
+# Private RouteTableA Create
+  PrivateRouteTableA: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-private-route-a"
+
+# Private RouteTableC Create
+  PrivateRouteTableC: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "${PJLecture10}-private-route-c"
+
+# ------------------------------------------------------------#
+# Routing
+# ------------------------------------------------------------# 
+# PublicRouteA Create
+  PublicRouteA: 
+    Type: "AWS::EC2::Route"
+    Properties: 
+      RouteTableId: !Ref PublicRouteTableA 
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway 
+
+# PublicRouteC Create
+  PublicRouteC: 
+    Type: "AWS::EC2::Route"
+    Properties: 
+      RouteTableId: !Ref PublicRouteTableC 
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway 
+
+# ------------------------------------------------------------#
+# RouteTable Associate
+# ------------------------------------------------------------# 
+# PublicRouteTable Associate SubnetA
+  PublicSubnetARouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PublicSubnetA 
+      RouteTableId: !Ref PublicRouteTableA
+
+# PublicRouteTable Associate SubnetC
+  PublicSubnetCRouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PublicSubnetC 
+      RouteTableId: !Ref PublicRouteTableC
+
+# PrivateRouteTable Associate SubnetA
+  PrivateSubnetARouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTableA 
+
+# PrivateRouteTable Associate SubnetC
+  PrivateSubnetCRouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PrivateSubnetC
+      RouteTableId: !Ref PrivateRouteTableC
+      
+# ------------------------------------------------------------#
+# EC2
+# ------------------------------------------------------------#
+  EC2:
+    Type: AWS::EC2::Instance
+    Properties: 
+      ImageId: ami-00d101850e971728d
+      KeyName: !Ref ImportedKeyPair
+      InstanceType: t2.micro
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !Ref PublicSubnetA
+          GroupSet:
+            - !Ref EC2SG
+      UserData: !Base64 |
+        #!/bin/bash
+        sudo yum install -y git
+      Tags:
+          - Key: Name
+            Value: !Sub "${PJLecture10}-ec2-test"
+            
+  ImportedKeyPair:
+    Type: AWS::EC2::KeyPair
+    Properties:
+      KeyName: demoKeyPair
+      PublicKeyMaterial: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuIk68voX4dmXP1gddgtwmWSR2OtiKuJs7gB2LBNeWDTt1fuP9HEWVTdAUb7lgP7oT0YxAHwnbH9HWXKaKdX+SFG5mCoFbbUPlHZZYfbyXyg5sFHV399QwuD8t6x0NS56dz3UbE4NMG3EJg/4aKOirQE9hWaSBviCM/yUUfLY2bB4YYH8UxzR5sZHharmD1JZBEdwEh/+/uqN9K2P0xAOYA7CaiFtcXGzMhHLEvy/q2RR9u34AcOfsCRvKg6eltJ7ccKU8lNRc/7WnRJ85uiPBbnSuVa397shsAIkCRhyArKU6JQwBNLLyLTzbX2g7I37RYH0V/W+v+ieCLHdPqLQV lecture04_EC2_key
+      Tags:
+        - Key: Name
+          Value: demoKeyPair
+            
+  EC2SG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub "${PJLecture10}-SG-test"
+      GroupDescription: Allow SSH and HTTP access
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        # http
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          #CidrIp: 0.0.0.0/0 ALBに変更
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+        # ssh
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          
+# ------------------------------------------------------------#
+#  DBInstance MySQL
+# ------------------------------------------------------------#
+  DBInstance: 
+    Type: "AWS::RDS::DBInstance"
+    Properties: 
+      DBInstanceIdentifier: !Sub "${PJLecture10}-${DBInstanceName}"
+      Engine: "mysql"
+      EngineVersion: !Sub "${MySQLMajorVersion}.${MySQLMinorVersion}"
+      DBInstanceClass: !Ref DBInstanceClass
+      AllocatedStorage: !Ref DBInstanceStorageSize
+      StorageType: !Ref DBInstanceStorageType
+      DBName: !Ref DBName
+      MasterUsername: !Ref DBMasterUserName
+      MasterUserPassword: !Ref DBPassword
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      PubliclyAccessible: false
+      MultiAZ: !Ref MultiAZ
+      PreferredBackupWindow: "18:00-18:30"
+      PreferredMaintenanceWindow: "sat:19:00-sat:19:30"
+      AutoMinorVersionUpgrade: false
+      DBParameterGroupName: !Ref DBParameterGroup  
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroup
+      CopyTagsToSnapshot: true
+      BackupRetentionPeriod: 7
+      Tags: 
+        - Key: "Name"
+          Value: !Ref DBInstanceName
+    DeletionPolicy: "Delete"
+
+# ------------------------------------------------------------#
+#  DBParameterGroup
+# ------------------------------------------------------------#
+  DBParameterGroup:
+    Type: "AWS::RDS::DBParameterGroup"
+    Properties:
+      Family: !Sub "MySQL${MySQLMajorVersion}"
+      Description: !Sub "${PJLecture10}-${DBInstanceName}-parm"
+
+# ------------------------------------------------------------#
+#  SecurityGroup for RDS (MySQL)
+# ------------------------------------------------------------#
+  RDSSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      VpcId: !Ref VPC
+      GroupName: !Sub "${PJLecture10}-${DBInstanceName}-sg"
+      GroupDescription: "-"
+      Tags:
+        - Key: "Name"
+          Value: !Sub "${PJLecture10}-${DBInstanceName}-sg"
+# Rule
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          CidrIp: !Ref VPCCIDR
+
+# ------------------------------------------------------------#
+#  DBSubnetGroup
+# ------------------------------------------------------------#
+  DBSubnetGroup: 
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties: 
+      DBSubnetGroupName: !Ref PrivateSubnetA
+      DBSubnetGroupDescription: "-"
+      SubnetIds: 
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetC
+
+# ------------------------------------------------------------#
+#  ALB
+# ------------------------------------------------------------#
+  LoadBalancerResource:
+    Type: "AWS::ElasticLoadBalancingV2::LoadBalancer"
+    Properties:
+      Name: !Sub "${PJLecture10}-ALB"
+      Scheme: "internet-facing"
+      Type: "application"
+      Subnets: 
+      - !Ref PublicSubnetA
+      - !Ref PublicSubnetC
+      SecurityGroups: 
+      - !Ref ALBSecurityGroup
+      IpAddressType: "ipv4"
+      Tags:
+      -
+        Key: "Name"
+        Value: !Sub "${PJLecture10}-ALB"
+
+#ターゲットグループ作成
+  TargetGroupResource:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub "${PJLecture10}-Target"
+      VpcId: !Ref VPC
+      Protocol: "HTTP"
+      ProtocolVersion: "HTTP1"
+      Port: 80
+      TargetType: "instance"
+      Targets: 
+      - 
+        Id: !Ref EC2
+        Port: 80
+      #- 2つめのEC2は省略
+      #  Id: !ImportValue ut-Instance-id-2
+      #  Port: 80
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: "/"
+      HealthCheckPort: "traffic-port"
+      HealthCheckProtocol: "HTTP"
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+      Matcher: 
+        HttpCode: "200,301"
+      Tags:
+      -
+        Key: "Name"
+        Value: !Sub "${PJLecture10}-Target"
+
+#リスナー設定
+  ListenerResource:
+    Type: "AWS::ElasticLoadBalancingV2::Listener"
+    Properties:
+      LoadBalancerArn: !Ref LoadBalancerResource
+      Port: 80
+      Protocol: "HTTP"
+      DefaultActions: 
+      - 
+        TargetGroupArn: !Ref TargetGroupResource
+        Type: "forward"
+
+#ALBセキュリティグループ
+  ALBSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      VpcId: !Ref VPC
+      GroupName: !Sub "${PJLecture10}-alb-sg"
+      GroupDescription: "-"
+      Tags:
+        - Key: "Name"
+          Value: !Sub "${PJLecture10}-alb-sg"
+# Rule
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"
+          
+          #443(https)は省略
+        #- IpProtocol: tcp
+        #  FromPort: 443
+        #  ToPort: 443
+        #  CidrIp: "0.0.0.0/0"
+
+# ------------------------------------------------------------#
+#  S3
+# ------------------------------------------------------------#
+  Bucket01:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: Private
+      BucketName: !Ref BucketNameBucket01
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+              
